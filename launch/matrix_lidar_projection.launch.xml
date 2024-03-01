@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <node  pkg="lidar_projection_ros2" exec="lidar_projection_node" >
+    <param name="use_tf" value="false" />
+    <param name="lidar_topic" value= "/vlp32c/rectified_concatenated_points" />
+    <param name="output_image_topic" value= "/davis/projected_image" /> 
+    <param name="input_image_topic" value= "/davis/image_raw" />
+    <param name="camera_yaml_file" value= "$(find-pkg-share lidar_projection_ros2)/params/0126_davis_manual_no_rotation.yaml" />
+  </node>
+  </launch>
