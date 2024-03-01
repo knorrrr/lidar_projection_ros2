@@ -27,7 +27,6 @@ LidarProjection::~LidarProjection() {}
 
 void LidarProjection::lidar_callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
 {
-  RCLCPP_INFO(this->get_logger(), "Lidar callback");
   Eigen::Matrix4d ext_mat;
   if (use_tf_ == true)
   {
@@ -56,8 +55,6 @@ void LidarProjection::lidar_callback(const sensor_msgs::msg::PointCloud2::Shared
   pcl::fromROSMsg(*msg, *cloud);
   PointMatrix cloud_mat(cloud->points.size(), 4);
 
-
-  RCLCPP_INFO(this->get_logger(), "cloud size: %d", cloud->points.size()); 
   #pragma omp parallel for
   for (size_t i = 0; i < cloud->points.size(); i++)
   {
@@ -85,14 +82,11 @@ void LidarProjection::lidar_callback(const sensor_msgs::msg::PointCloud2::Shared
 
   sensor_msgs::msg::Image::SharedPtr image_msg = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", camera_image_->image).toImageMsg();
   image_pub_->publish(*image_msg);
-  RCLCPP_INFO(this->get_logger(), "end_lidar_callback");
 }
 
 void LidarProjection::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
-  RCLCPP_INFO(this->get_logger(), "Image received");
   camera_image_ = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-  RCLCPP_INFO(this->get_logger(), "Image received end");
 }
 
 void LidarProjection::load_camera_yaml(const std::string& file_path)
