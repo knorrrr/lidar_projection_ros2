@@ -14,6 +14,7 @@
 #include "tf2_ros/buffer.h"
 #include <Eigen/Dense>
 #include <opencv2/calib3d.hpp>
+#include <omp.h>
 
 class LidarProjection : public rclcpp::Node
 {

@@ -1,5 +1,4 @@
 #include <lidar_projection_ros2/lidar_projection.hpp>
-#include <omp.h>
 typedef Eigen::Matrix<float, Eigen::Dynamic, 4, Eigen::RowMajor> PointMatrix;
 
 LidarProjection::LidarProjection() : Node("lidar_projection"), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
