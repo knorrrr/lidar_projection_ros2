@@ -36,3 +36,8 @@ source ../install/setup.bash
 | `use_tf`            | `bool`   | Flag indicating whether to use TF for transformation | `true`       |
 | `parent_tf`         | `String` | Parent TF frame name                                 | `vlp32c`    |
 | `child_tf`          | `String` | Child TF frame name                                  | `davis`     |
+
+# Todo
+- Publish a MONO16 or 16UC1 image
+- Publish only a LiDAR projection
+- Make a depth image color more clearly
