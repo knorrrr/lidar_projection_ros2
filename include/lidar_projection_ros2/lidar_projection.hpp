@@ -28,6 +28,8 @@ private:
     std::string output_image_topic_;
     std::string input_image_topic_;
     std::string camera_yaml_file_;
+    std::string parent_tf_;
+    std::string child_tf_;
     bool use_tf_;
 
     cv_bridge::CvImagePtr camera_image_;

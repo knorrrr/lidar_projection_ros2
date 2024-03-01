@@ -7,9 +7,13 @@ LidarProjection::LidarProjection() : Node("lidar_projection"), tf_buffer_(this->
   this->declare_parameter("lidar_topic",        "/vlp32c/velodyne_points");
   this->declare_parameter("input_image_topic",  "/davis/image_raw");
   this->declare_parameter("output_image_topic", "/davis/lidar_projection_image");
-  this->declare_parameter("camera_yaml_file",  "/home/hermes-22/git_open/lidar_projection_ros2/src/lidar_projection_ros2/params/0126_davis_manual_no_rotation.yaml");
+  this->declare_parameter("camera_yaml_file",  "/path/to/camera.yaml");
   this->declare_parameter("use_tf", true);
+  this->declare_parameter("parent_tf", "vlp32c");
+  this->declare_parameter("child_tf", "davis");
   
+  child_tf_          = this->get_parameter("child_tf").as_string();
+  parent_tf_         = this->get_parameter("parent_tf").as_string();
   use_tf_            = this->get_parameter("use_tf").as_bool();
   lidar_topic_       = this->get_parameter("lidar_topic").as_string();
   output_image_topic_= this->get_parameter("output_image_topic").as_string();
@@ -32,7 +36,7 @@ void LidarProjection::lidar_callback(const sensor_msgs::msg::PointCloud2::Shared
   {
     geometry_msgs::msg::TransformStamped transform_stamped;
     try{
-      transform_stamped = tf_buffer_.lookupTransform("davis", "vlp32c", tf2::TimePointZero);
+      transform_stamped = tf_buffer_.lookupTransform(child_tf_, parent_tf_, tf2::TimePointZero);
     }
     catch (tf2::TransformException &ex) {
       RCLCPP_WARN(this->get_logger(), "Transform error: %s", ex.what());
