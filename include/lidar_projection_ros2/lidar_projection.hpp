@@ -24,9 +24,7 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr          image_pub_;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr       image_sub_;
-    rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr     camera_info_pub_;
     std::string lidar_topic_;
-    std::string camera_info_topic_;
     std::string output_image_topic_;
     std::string input_image_topic_;
     std::string camera_yaml_file_;

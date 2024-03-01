@@ -5,7 +5,6 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, 4, Eigen::RowMajor> PointMatrix;
 LidarProjection::LidarProjection() : Node("lidar_projection"), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
 {
   this->declare_parameter("lidar_topic",        "/vlp32c/velodyne_points");
-  this->declare_parameter("camera_info_topic",  "/davis/camera_info");
   this->declare_parameter("input_image_topic",  "/davis/image_raw");
   this->declare_parameter("output_image_topic", "/davis/lidar_projection_image");
   this->declare_parameter("camera_yaml_file",  "/home/hermes-22/git_open/lidar_projection_ros2/src/lidar_projection_ros2/params/0126_davis_manual_no_rotation.yaml");
@@ -13,14 +12,12 @@ LidarProjection::LidarProjection() : Node("lidar_projection"), tf_buffer_(this->
   
   use_tf_            = this->get_parameter("use_tf").as_bool();
   lidar_topic_       = this->get_parameter("lidar_topic").as_string();
-  camera_info_topic_ = this->get_parameter("camera_info_topic").as_string();
   output_image_topic_= this->get_parameter("output_image_topic").as_string();
   input_image_topic_ = this->get_parameter("input_image_topic").as_string();
   camera_yaml_file_  = this->get_parameter("camera_yaml_file").as_string();
 
   lidar_sub_       = this->create_subscription<sensor_msgs::msg::PointCloud2>(lidar_topic_, 10, std::bind(&LidarProjection::lidar_callback, this, std::placeholders::_1));
   image_sub_       = this->create_subscription<sensor_msgs::msg::Image>(input_image_topic_, rclcpp::SensorDataQoS() ,std::bind(&LidarProjection::image_callback, this, std::placeholders::_1));
-  camera_info_pub_ = this->create_publisher   <sensor_msgs::msg::CameraInfo>("camera_info", 10);
   image_pub_       = this->create_publisher   <sensor_msgs::msg::Image>(output_image_topic_, 10);
 
   load_camera_yaml(camera_yaml_file_);
